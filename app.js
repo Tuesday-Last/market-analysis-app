@@ -2,19 +2,39 @@ var imageSource = ["bag", "banana", "boots", "chair", "cthulhu", "dragon", "pen"
 var imageHolder = []
 
 function Item(image) {
-  var votes = 0;
-  var name = image;
-  var path = "images/" + image + ".jpg";
+  this.votes = 0;
+  this.name = image;
+  this.path = "images/" + image + ".jpg";
   imageHolder.push(this);
-  console.log(name);
+  console.log(this.path);
 };
 
-function imageCaller(images){
+function imageCaller(){
   for (var i = 0; i < imageSource.length; i++){
-    Item();
+    new Item(imageSource[i]);
   }
 };
 
-imageCaller(imageSource);
+imageCaller();
 
-console.log("Hello World")
+var Tracker = {
+  choiceOne: document.getElementById("choiceOne"),
+  choiceTwo: document.getElementById("choiceTwo"),
+  choiceThree: document.getElementById("choiceThree"),
+  picker: function() {
+    return Math.floor(Math.random() * imageSource.length);
+  },
+  printImages: function (){
+    choiceOne.src = imageHolder[this.picker()].path;
+    choiceTwo.src = imageHolder[this.picker()].path;
+    while (choiceOne === choiceTwo){
+      choiceTwo.src = imageHolder[this.picker()].path;
+    };
+    choiceThree.src = imageHolder[this.picker()].path;
+    while (choiceThree === choiceTwo || choiceThree === choiceOne){
+      choiceThree.src = imageHolder[this.picker()].path;
+    }
+  }, 
+
+//   imageblock.addEventListener("click", )
+}
