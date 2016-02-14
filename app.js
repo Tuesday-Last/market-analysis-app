@@ -1,11 +1,11 @@
 var imageSource = ["bag", "banana", "boots", "chair", "cthulhu", "dragon", "pen", "scissors", "shark", "sweep", "unicorn", "usb", "water_can", "wine_glass"];
-var imageHolder = []
+var itemHolder = []
 
 function Item(image) {
   this.votes = 0;
   this.name = image;
   this.path = "images/" + image + ".jpg";
-  imageHolder.push(this);
+  itemHolder.push(this);
 };
 
 function imageCaller(){
@@ -22,73 +22,72 @@ var tracker = {
   choiceTwo: document.getElementById("choiceTwo"),
   choiceThree: document.getElementById("choiceThree"),
   voteCounter: 0,
+
   picker: function() {
     return Math.floor(Math.random() * imageSource.length);
   },
+
   printImages: function (){
     var pickOne = this.picker();
-    choiceOne.src = imageHolder[pickOne].path;
-    choiceOne.name = imageHolder[pickOne].name;
+    choiceOne.src = itemHolder[pickOne].path;
+    choiceOne.name = itemHolder[pickOne].name;
     var pickTwo = this.picker();
-    choiceTwo.src = imageHolder[pickTwo].path;
-    choiceTwo.name = imageHolder[pickTwo].name;
-    console.log(choiceOne.name);
+    choiceTwo.src = itemHolder[pickTwo].path;
+    choiceTwo.name = itemHolder[pickTwo].name;
     while (choiceOne.name === choiceTwo.name){
-      console.log("loop 1");
+      console.log("loop 1" + "votecounter&&&&&&&&" + tracker.voteCounter);
       var pickTwo = this.picker();
-      choiceTwo.src = imageHolder[pickTwo].path;
-      choiceTwo.name = imageHolder[pickTwo].name;
+      choiceTwo.src = itemHolder[pickTwo].path;
+      choiceTwo.name = itemHolder[pickTwo].name;
     };
     var pickThree = this.picker();
-    choiceThree.src = imageHolder[pickThree].path;
-    choiceThree.name = imageHolder[pickThree].name;
+    choiceThree.src = itemHolder[pickThree].path;
+    choiceThree.name = itemHolder[pickThree].name;
     while (choiceOne.name === choiceThree.name || choiceTwo.name === choiceThree.name){
-      console.log("loop 2")
+      console.log("loop 2" + "votecounter$$$$$$" + tracker.voteCounter)
       var pickThree = this.picker();
-      choiceThree.src = imageHolder[pickThree].path;
-      choiceThree.name = imageHolder[pickThree].name;
+      choiceThree.src = itemHolder[pickThree].path;
+      choiceThree.name = itemHolder[pickThree].name;
     };
   },
 };
 
-// function chartCaller(){
-//   if tracker.voteCounter === 15
+var chartData = {
+    labels: ["Bag", "Banana", "Boots", "Chair", "Cthulhu", "Dragon", "Pen", "Scissors", "Shark", "Sweep", "Unicorn", "Usb", "Wateringcan", "Wine glass"],
+    datasets: [
+        one = {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: []
+        },
+    ]
+}; 
 
+var ctx = document.getElementById("results").getContext("2d");
+var myNewChart = new Chart(ctx).Bar(chartData);
+var meDatalist = [];
 
-tracker.imageblock.addEventListener("click", function() {
-
-  if (event.target == tracker.choiceOne) {
-    console.log("choiceOne");
-    console.log(tracker.choiceOne.src);
-    for (var i=0; i < imageHolder.length; i++) {
-      if (tracker.choiceOne.name == imageHolder[i].name){
-        imageHolder[i].votes ++;
-        tracker.voteCounter ++;
-        console.log(imageHolder[i].votes)
+tracker.imageblock.addEventListener("click", function(event) {
+  console.log(event.target.name);
+    if (tracker.voteCounter >= 15) {
+      tracker.imageblock.removeEventListener("click");
+      console.log("Votes at 15")
+    } else {
+      tracker.voteCounter++;
+      for (var i=0; i < itemHolder.length; i++) {
+        if (event.target.name === itemHolder[i].name){
+          itemHolder[i].votes++;
+          // console.log(event.target.name);
+          console.log(itemHolder[i].votes + " " + itemHolder[i].name);
+          tracker.printImages();
+          console.log("Vote Counter " + tracker.voteCounter);
+          break;  
+        }
       }
-    }
-  };
-  if (event.target == tracker.choiceTwo) {
-    console.log(tracker.choiceTwo.src);
-    for (var i=0; i < imageHolder.length; i++) {
-      if (tracker.choiceTwo.name == imageHolder[i].name){
-        imageHolder[i].votes ++;
-        tracker.voteCounter ++;
-        console.log(imageHolder[i].votes)
-      }
-    }
-  };
-  if (event.target == tracker.choiceThree) {
-    console.log(tracker.choiceThree.src);
-    for (var i=0; i < imageHolder.length; i++) {
-      if (tracker.choiceThree.name == imageHolder[i].name){
-        imageHolder[i].votes ++;
-        tracker.voteCounter ++;
-        console.log(imageHolder[i].votes)
-      }
-    }
-  };
-  tracker.printImages();
-});
+    };
+  })
 
 window.onload = tracker.printImages();
