@@ -1,3 +1,10 @@
 img {
-  width: 100px;
+  width: 250px;
+  height: 300px;
+}
+button {
+  display: none;
+}
+canvas {
+  display: none;
 }
